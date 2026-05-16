@@ -1,14 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
-      <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval'; object-src 'self'">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+    <!-- ✅ FIX: Update CSP to allow Google Maps -->
+    <meta
+            http-equiv="Content-Security-Policy"
+            content="
+        default-src 'self';
+        script-src 'self' 'unsafe-eval' 'unsafe-inline' https://maps.googleapis.com https://*.googleapis.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        img-src 'self' data: https: blob: https://maps.gstatic.com https://*.googleapis.com https://*.ggpht.com;
+        font-src 'self' https://fonts.gstatic.com;
+        connect-src 'self' https://maps.googleapis.com https://*.googleapis.com http://127.0.0.1:5000;
+        worker-src 'self' blob:;
+      "
+    />
+
+    <title>Time Capsule App</title>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
 </html>

@@ -1,54 +1,43 @@
-from flask import Flask
 from flask_cors import CORS
+from flask import Flask
+from flask_jwt_extended import JWTManager
 from models import db, bcrypt
 from routes.auth_routes import auth_bp
-from flask_jwt_extended import JWTManager
+from routes.capsule_routes import capsule_bp
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+def create_app():
+    app = Flask(__name__)
 
-app = Flask(__name__)
+    # ---------- CONFIG ----------
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
+        "DATABASE_URL", "sqlite:///capsula.db"
+    )
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["JWT_SECRET_KEY"] = os.environ.get(
+        "JWT_SECRET_KEY", "super-secret-key"
+    )
 
-# ------------------------------------------------------------------
-# 1. APPLICATION CONFIGURATION (MUST BE AT THE TOP)
-# ------------------------------------------------------------------
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+    # ---------- INIT EXTENSIONS ----------
+    db.init_app(app)
+    bcrypt.init_app(app)
+    JWTManager(app)
+    CORS(app)  # allow all cross-origin requests for dev
 
-# ------------------------------------------------------------------
-# 2. INITIALIZE EXTENSIONS
-# ------------------------------------------------------------------
-db.init_app(app)
-bcrypt.init_app(app)
-jwt = JWTManager(app)
+    # ---------- REGISTER BLUEPRINTS ----------
+    app.register_blueprint(auth_bp, url_prefix="/auth")
+    app.register_blueprint(capsule_bp)
 
-# ------------------------------------------------------------------
-# 3. CORS FIX: Use ONLY the correct, specific configuration
-# ------------------------------------------------------------------
-# This is the line that allows your Vite frontend to talk to your Flask backend
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+    # ---------- SIMPLE ROOT ROUTE ----------
+    @app.route("/")
+    def index():
+        return {"message": "Welcome to Capsula API!"}
 
-# ------------------------------------------------------------------
-# 4. REGISTER BLUEPRINTS (MUST BE BEFORE RUNNING THE APP)
-# ------------------------------------------------------------------
-app.register_blueprint(auth_bp)
+    return app
 
-# The 'home' route is fine
-@app.route('/')
-def home():
-    return "Welcome to Capsula!"
 
-# Remove the duplicated @app.route('/register', methods=['POST'])
-# if it is already defined inside your auth_bp blueprint.
-
-# ------------------------------------------------------------------
-# 5. RUN THE APP
-# ------------------------------------------------------------------
-with app.app_context():
-    db.create_all()
-
-if __name__ == '__main__':
-    # Add debug=True for better error reporting in development
-    app.run(port=5000, debug=True)
+if __name__ == "__main__":
+    app = create_app()
+    with app.app_context():
+        db.create_all()
+    app.run(debug=True)

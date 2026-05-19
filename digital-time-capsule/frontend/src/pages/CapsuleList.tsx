@@ -57,7 +57,7 @@ const CapsuleList: React.FC = () => {
       const token = localStorage.getItem("token");
       if (!token) return navigate("/login");
 
-      const res = await fetch("http://127.0.0.1:5000/capsules", {
+      const res = await fetch("https://capsula-les8.onrender.com/capsules", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -78,7 +78,7 @@ const CapsuleList: React.FC = () => {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    const res = await fetch(`http://127.0.0.1:5000/capsules/${id}`, {
+    const res = await fetch(`https://capsula-les8.onrender.com/capsules/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

@@ -31,7 +31,7 @@ const CapsuleView: React.FC = () => {
     const token = localStorage.getItem("token");
     if (!token) return navigate("/login");
 
-    let url = `http://127.0.0.1:5000/capsules/${id}`;
+    let url = `https://capsula-les8.onrender.com/capsules/${id}`;
     if (lat != null && lng != null) url += `?lat=${lat}&lng=${lng}`;
 
     const res = await fetch(url, {

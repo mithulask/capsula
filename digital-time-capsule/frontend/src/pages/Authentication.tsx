@@ -23,8 +23,8 @@ const Authentication: React.FC = () => {
     try {
       const url =
         mode === "login"
-          ? "http://127.0.0.1:5000/auth/login"
-          : "http://127.0.0.1:5000/auth/register";
+          ? "https://capsula-les8.onrender.com/auth/login"
+          : "https://capsula-les8.onrender.com/auth/register";
 
       const body =
         mode === "login"

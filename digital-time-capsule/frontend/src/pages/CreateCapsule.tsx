@@ -93,7 +93,7 @@ const CreateCapsule: React.FC = () => {
     if (images.length) payload.images = images;
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/capsules", {
+      const res = await fetch("https://capsula-les8.onrender.com/capsules", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload),

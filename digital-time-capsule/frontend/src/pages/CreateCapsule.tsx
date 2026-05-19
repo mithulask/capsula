@@ -166,24 +166,29 @@ const CreateCapsule: React.FC = () => {
 
           <hr className="cc-divider" />
 
-          <div className="cc-section-title">Images <span className="cc-optional">— optional</span></div>
-          <input id="cc-img-input" type="file" accept="image/*" multiple onChange={handleImageUpload} style={{ display: "none" }} />
-          <label htmlFor="cc-img-input" className="cc-upload">
-            <div className="cc-upload-icon"><Upload size={20} color="#b07fe8" /></div>
-            <div className="cc-upload-text">Click to upload images</div>
-            <div className="cc-upload-hint">PNG, JPG, GIF up to 10MB</div>
-          </label>
-          {images.length > 0 && (
-            <div className="cc-imgs-grid">
-              {images.map((img, idx) => (
-                <div key={idx} className="cc-img-wrap">
-                  <img src={img} alt={`upload-${idx}`} style={{ width: "100%", height: 110, objectFit: "cover" }} />
-                  <button type="button" className="cc-img-del" onClick={() => removeImage(idx)}><X size={12} /></button>
-                </div>
-              ))}
-            </div>
-          )}
-
+         <div className="cc-section-title">Images <span className="cc-optional">— optional</span></div>
+         <input id="cc-img-input" type="file" accept="image/*" multiple onChange={handleImageUpload} style={{ display: "none" }} />
+         {images.length === 0 ? (
+           <label htmlFor="cc-img-input" className="cc-upload">
+             <div className="cc-upload-icon"><Upload size={20} color="#b07fe8" /></div>
+             <div className="cc-upload-text">Click to upload images</div>
+             <div className="cc-upload-hint">PNG, JPG, GIF up to 10MB</div>
+           </label>
+         ) : (
+           <div>
+             <div className="cc-imgs-grid">
+               {images.map((img, idx) => (
+                 <div key={idx} className="cc-img-wrap">
+                   <img src={img} alt={`upload-${idx}`} style={{ width: "100%", height: 110, objectFit: "cover" }} />
+                   <button type="button" className="cc-img-del" onClick={() => removeImage(idx)}><X size={12} /></button>
+                 </div>
+               ))}
+             </div>
+             <label htmlFor="cc-img-input" style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: "0.75rem", cursor: "pointer", fontSize: 13, color: "#b07fe8" }}>
+               <Upload size={13} /> Add more images
+             </label>
+           </div>
+         )}
           <div className="cc-btn-row">
             <button type="button" className="cc-btn-cancel" onClick={() => navigate("/capsules")}>Cancel</button>
             <button type="submit" className="cc-btn-create" disabled={isLoading || loadingImages > 0}>

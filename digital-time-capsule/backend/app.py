@@ -48,3 +48,11 @@ if __name__ == "__main__":
         db.create_all()
 
         app = create_app()
+try:
+    app = create_app()
+    with app.app_context():
+        db.create_all()
+except Exception as e:
+    import traceback
+    traceback.print_exc()
+    raise

@@ -42,6 +42,7 @@ const Authentication: React.FC = () => {
       if (res.ok) {
         localStorage.setItem("token", data.access_token);
         localStorage.setItem("user_id", data.user_id);
+        localStorage.setItem("username", data.username || name);
         toast.success(
           mode === "login"
             ? "✅ Login successful!"

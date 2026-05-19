@@ -50,6 +50,7 @@ const CapsuleList: React.FC = () => {
   };
 
   const currentUserId = Number(localStorage.getItem("user_id"));
+  const username = localStorage.getItem("username") || "there";
 
   const fetchCapsules = async () => {
     setLoading(true);
@@ -115,7 +116,7 @@ return (
         </h1>
 
         <div className="flex items-center gap-6">
-          <span className="text-gray-700 font-medium">Welcome, mia!</span>
+     <span className="text-gray-700 font-medium">Welcome, {username}!</span>
           <button
             onClick={handleLogout}
             className="text-gray-600 hover:text-gray-800 transition"
